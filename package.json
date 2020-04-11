@@ -1,0 +1,21 @@
+{
+  "name": "nodejs-arecord-multimon",
+  "version": "1.0.0",
+  "description": "Take arecord command piped to multimon-ng and give results",
+  "main": "index.ts",
+  "scripts": {
+    "build": "tsc",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Valentin Saugnier (valentin.s.10@gmail.com)",
+  "license": "ISC",
+  "peerDependencies": {
+    "fkill": "^7.0.0",
+    "@types/node": "^13.11.1",
+    "rxjs": "^6.5.5"
+  },
+  "devDependencies": {
+    "ts-node": "^8.8.2",
+    "typescript": "^3.8.3"
+  }
+}
