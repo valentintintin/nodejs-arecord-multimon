@@ -19,6 +19,6 @@ import { AudioDecoder, MultimonModeEnum } from 'nodejs-arecord-multimon';
 
 new AudioDecoder().decode('hw:0,0', [
     MultimonModeEnum.DTMF, 
-    MultimonModeEnum.APRS
-], [], ['-A']).data.subscribe(data => console.log(data));
+    MultimonModeEnum.AFSK1200
+], [], ['-A']).subscribe(data => console.log(data));
 ```

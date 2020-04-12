@@ -1,13 +1,9 @@
-import { AudioDecoder, MultimonModeEnum } from '../index';
+import { AudioDecoder, MultimonModeEnum } from '../src/audio-decoder';
 
 console.log('Start demo');
 
 const audioDecoder = new AudioDecoder();
-const result = audioDecoder.decode('pulse', [MultimonModeEnum.DTMF, MultimonModeEnum.APRS], [], ['-A']);
-
-console.log('Pid started : ' + result.process.pid);
-
-result.data.subscribe(data => console.log(data));
+audioDecoder.decode('pulse', [MultimonModeEnum.DTMF, MultimonModeEnum.AFSK1200], [], ['-A']).subscribe(data => console.log(data));
 
 setTimeout(_ => {
     console.log('Stop demo');
