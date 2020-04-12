@@ -31,7 +31,7 @@ export class AudioDecoder {
         }
     }
 
-    public decode(device: string, type: MultimonModeEnum[], arecordOptions: string[] = [], multimonOptions: string[] = []): Observable<AudioDecoderDecodedResult> {
+    public decode(device: string, type: MultimonModeEnum[] | string[], arecordOptions: string[] = [], multimonOptions: string[] = []): Observable<AudioDecoderDecodedResult> {
         this._checkDepends();
 
         const execString = `arecord -D ${device} -r 22050 -f S16_LE ${arecordOptions.join(' ')} | multimon-ng -v 0 -q ${multimonOptions.join(' ')} -a ${type.join(' -a ')} -t raw /dev/stdin`;
@@ -73,13 +73,12 @@ export interface AudioDecoderDecodedResult {
 
 export enum MultimonModeEnum {
     AFSK1200 = 'AFSK1200',
-    APRS = 'AFSK1200',
     AFSK2400 = 'AFSK2400',
     AFSK2400_2 = 'AFSK2400_2',
     AFSK2400_3 = 'AFSK2400_3',
     CCIR = 'CCIR',
     CLIPFSK = 'CLIPFSK',
-    CW = 'CW',
+    DUMP_CSV = 'DUMPCSV',
     DTMF = 'DTMF',
     DZVEI = 'DZVEI',
     EAS = 'EAS',
@@ -88,11 +87,12 @@ export enum MultimonModeEnum {
     FLEX = 'FLEX',
     FSK9600 = 'FSK9600',
     HAPN4800 = 'HAPN4800',
-    MORSE = 'MORSE',
+    MORSE_CW = 'MORSE_CW',
     POCSAG1200 = 'POCSAG1200',
     POCSAG2400 = 'POCSAG2400',
     POCSAG512 = 'POCSAG512',
     PZVEI = 'PZVEI',
+    TONE = 'TONE', // only for https://github.com/valentintintin/multimon-ng
     UFSK1200 = 'UFSK1200',
     X10 = 'X10',
     ZVEI1 = 'ZVEI1',
