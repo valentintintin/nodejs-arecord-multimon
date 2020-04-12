@@ -22,7 +22,14 @@
   ],
   "author": "Valentin Saugnier (valentin.s.10@gmail.com)",
   "license": "ISC",
-  "peerDependencies": {
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/valentintintin/nodejs-arecord-multimon.git"
+  },
+  "bugs": {
+    "url": "https://github.com/valentintintin/nodejs-arecord-multimon/issues"
+  },
+  "dependencies": {
     "fkill": "^7.0.0",
     "rxjs": "^6.5.5"
   },
