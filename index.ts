@@ -3,7 +3,6 @@
  */
 import { Observable, Observer } from 'rxjs';
 import * as child from 'child_process';
-import { ChildProcess } from 'child_process';
 
 const fkill = require('fkill');
 
@@ -32,29 +31,26 @@ export class AudioDecoder {
         }
     }
 
-    public decode(device: string, type: MultimonModeEnum[], arecordOptions: string[] = [], multimonOptions: string[] = []): AudioDecoderDecodeResult {
+    public decode(device: string, type: MultimonModeEnum[], arecordOptions: string[] = [], multimonOptions: string[] = []): Observable<AudioDecoderDecodedResult> {
         this._checkDepends();
 
         const execString = `arecord -D ${device} -r 22050 -f S16_LE ${arecordOptions.join(' ')} | multimon-ng -v 0 -q ${multimonOptions.join(' ')} -a ${type.join(' -a ')} -t raw /dev/stdin`;
         const process = child.exec(execString);
 
-        return {
-            process: process,
-            data: new Observable<AudioDecoderDecodedResult>((observer: Observer<AudioDecoderDecodedResult>) => {
-                process.stdout?.on('data', (message: string) => {
-                    message = message.trim();
-                    const split = message.split(':');
+        return new Observable<AudioDecoderDecodedResult>((observer: Observer<AudioDecoderDecodedResult>) => {
+            process.stdout?.on('data', (message: string) => {
+                message = message.trim();
+                const split = message.split(':');
 
-                    observer.next({
-                        raw: message,
-                        type: split[0],
-                        data: split[1].substring(1)
-                    } as AudioDecoderDecodedResult);
-                });
-                process.on('exit', _ => observer.complete());
-                process.on('error', err => observer.error(err));
-            })
-        };
+                observer.next({
+                    raw: message,
+                    type: split[0],
+                    data: split[1].substring(1)
+                } as AudioDecoderDecodedResult);
+            });
+            process.on('exit', _ => observer.complete());
+            process.on('error', err => observer.error(err));
+        });
     }
 
     public stop(): Observable<boolean> {
@@ -73,11 +69,6 @@ export interface AudioDecoderDecodedResult {
     type: string;
     data: string;
     raw: string;
-}
-
-export interface AudioDecoderDecodeResult {
-    process: ChildProcess,
-    data: Observable<AudioDecoderDecodedResult>
 }
 
 export enum MultimonModeEnum {

@@ -1,6 +1,6 @@
 {
   "name": "nodejs-arecord-multimon",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "description": "Take arecord command piped to multimon-ng and give results",
   "main": "index.ts",
   "scripts": {
