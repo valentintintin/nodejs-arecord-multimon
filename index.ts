@@ -1,9 +1,10 @@
 /**
  * @author Valentin Saugnier (valentin.s.10@gmail.com)
  */
-import { Observable, Observer, of } from 'rxjs';
+import { Observable, Observer } from 'rxjs';
 import * as child from 'child_process';
 import { ChildProcess } from 'child_process';
+
 const fkill = require('fkill');
 
 export class AudioDecoder {
@@ -39,8 +40,17 @@ export class AudioDecoder {
 
         return {
             process: process,
-            data: new Observable<string>((observer: Observer<string>) => {
-                process.stdout?.on('data', (message: string) => observer.next(message.trim()));
+            data: new Observable<AudioDecoderDecodedResult>((observer: Observer<AudioDecoderDecodedResult>) => {
+                process.stdout?.on('data', (message: string) => {
+                    message = message.trim();
+                    const split = message.split(':');
+
+                    observer.next({
+                        raw: message,
+                        type: split[0],
+                        data: split[1].substring(1)
+                    } as AudioDecoderDecodedResult);
+                });
                 process.on('exit', _ => observer.complete());
                 process.on('error', err => observer.error(err));
             })
@@ -59,9 +69,15 @@ export class AudioDecoder {
     }
 }
 
+export interface AudioDecoderDecodedResult {
+    type: string;
+    data: string;
+    raw: string;
+}
+
 export interface AudioDecoderDecodeResult {
     process: ChildProcess,
-    data: Observable<string>
+    data: Observable<AudioDecoderDecodedResult>
 }
 
 export enum MultimonModeEnum {
